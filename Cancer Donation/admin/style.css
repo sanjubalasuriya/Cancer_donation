@@ -1,0 +1,777 @@
+@import url("https://fonts.googlepis.com/css2?family=Ubuntu:wght@300&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #be0404;
+  --red--dark: #d40000;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+  --transition: all 400ms ease;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--red);
+  border-left: 10px solid var(--red);
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+.navigation.active {
+  width: 65px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover,
+.navigation ul li.hovered {
+  background: var(--white);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--red);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 70px;
+  text-align: center;
+}
+
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75em;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+/* 
+curve outside */
+
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--white);
+}
+
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--white);
+}
+
+ul form button {
+  background-color: white;
+  padding: 10px 20px;
+  margin: 20px 40px;
+}
+
+/* main */
+.main {
+  position: absolute;
+  width: calc(100% - 350px);
+  left: 310px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.2s;
+}
+
+.main.active {
+  width: calc(100% - 125px);
+  left: 75px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5em;
+  cursor: pointer;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-right: 115px;
+}
+
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.card:hover {
+  margin-top: -4px;
+  margin-bottom: 4px;
+  transition: var(--transition);
+}
+
+.cardBox .card a {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.cardBox .card a .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2em;
+  color: var(--red);
+}
+
+.cardBox .card a .cardName {
+  color: var(--black2);
+  font-size: 1.1em;
+  margin-top: 5px;
+}
+
+.cardBox .card a .iconBx {
+  font-size: 3.5em;
+  color: var(--black2);
+}
+
+.cardBox .card a:hover {
+  background: var(--red);
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+.cardbox2 {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+}
+
+.cardbox2 .event,
+.cardbox2 .news {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardbox2 .index_chart {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardbox2 .event:hover,
+.cardbox2 .news:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.cardbox2 .event:hover .ion,
+.cardbox2 .news:hover .ion {
+  color: var(--white);
+}
+
+.cardbox2 a {
+  text-decoration: none;
+  color: var(--red);
+}
+
+.news,
+.event {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ion {
+  font-size: 3.5em;
+  color: var(--black2);
+}
+
+.details {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
+  margin-top: 10px;
+}
+
+.details .recentOrders {
+  position: relative;
+  display: grid;
+  min-height: 500px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--red);
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table_subtitle {
+  padding: 20px;
+}
+
+.table_subtitle ion-icon {
+  font-size: 20px;
+  margin: 10px 10px -5px 10px;
+}
+
+#donation,
+#donation1 {
+  padding-top: 5rem;
+}
+
+/* .details .recentOrders table tr {
+  color: var(--black1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+
+.details .recentOrders table tbody tr:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+
+.details .recentOrders table tr td:last-child {
+  text-align: end;
+}
+
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: end;
+}
+
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center;
+} */
+
+.status.deliverd {
+  padding: 2px 4px;
+  background: chartreuse;
+  counter-reset: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.container_admin {
+  margin: 1.5rem 0 1.5rem 1.5rem;
+  padding: 2rem;
+  border-radius: 2rem;
+  border: none;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.container_body {
+  margin-top: 2rem;
+}
+
+.details_table {
+  position: relative;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
+  margin-top: 10px;
+}
+
+.table_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--red);
+}
+
+.btn {
+  position: relative;
+  padding: 10px 10px;
+  background: var(--red);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+  transition: var(--transition);
+  border: none;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background: var(--red--dark);
+  transition: var(--transition);
+}
+
+.details_table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.details_table table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid var(--black1);
+  font-size: 18px;
+  text-align: left;
+}
+
+.details_table table tr {
+  color: var(--black1);
+  border-bottom: 1px solid rgb(2, 90, 255);
+}
+
+.details_table table tr:last-child {
+  border-bottom: none;
+}
+
+.details_table table tbody tr:hover {
+  background: var(--gray);
+  color: var(--black1);
+}
+
+.details_table table tr td {
+  padding: 15px 10px;
+}
+
+.details_table table tr td:last-child {
+  text-align: center;
+  width: 200px;
+}
+
+.details_table table tr th:last-child {
+  text-align: center;
+}
+
+.details_table input {
+  height: 45px;
+  width: 30%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 2px solid rgb(177, 177, 177);
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.repot_table {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.report_icon {
+  font-size: 20px;
+  margin-bottom: -3px;
+}
+
+.action.edit {
+  padding: 8px 6px;
+  background: var(--red);
+  counter-reset: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--white);
+  width: 50px;
+}
+
+.action.delete {
+  background: var(--red);
+  counter-reset: var(--white);
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--white);
+  border: none;
+}
+
+.col {
+  margin: auto;
+  gap: 5px;
+}
+
+.col2 {
+  margin: auto;
+  width: 50px;
+  text-align: center;
+}
+
+.swal-button {
+  color: var(--white);
+  padding: 7px 19px;
+  border-radius: 2px;
+  background-color: var(--red);
+  font-size: 12px;
+  border: none;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--red);
+}
+
+.swal-modal {
+  background-color: #000000a6;
+}
+
+.swal-button:not([disable]):hover {
+  color: var(--red);
+  background: transparent;
+  border: 1px solid var(--red);
+}
+
+.swal-icon--success:before,
+.swal-icon--success:after,
+.swal-icon--success__hide-corners {
+  background: none !important;
+}
+
+.swal-icon {
+  color: var(--red);
+}
+
+.swal-title {
+  color: var(--white);
+}
+
+.swal-text {
+  color: var(--white);
+}
+
+.swal-button:focus {
+  box-shadow: none;
+}
+
+/* ===================    Form   =========================== */
+
+.content_form form .input-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+
+form .input-details .input-box {
+  margin-bottom: 15px;
+  width: calc(100% / 2 - 20px);
+}
+
+form .input-box .labels {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.input-details .input-box input,
+.input-details .input-box select {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.input-details .input-box textarea {
+  height: 100px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.input-details .input-box input:focus,
+.input-details .input-box input:valid {
+  border-color: var(--black2);
+}
+
+::-webkit-file-upload-button {
+  background-color: var(--black2);
+  padding: 16px;
+  border: none;
+  margin-left: -15px;
+  border-radius: 5px;
+  color: var(--white);
+}
+
+form .gender-details .gender-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+form .category {
+  display: flex;
+  width: 80%;
+  margin: 14px 0;
+  justify-content: space-between;
+}
+form .category label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+form .category label .dot {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+#dot-1:checked ~ .category label .one,
+#dot-2:checked ~ .category label .two,
+#dot-3:checked ~ .category label .three {
+  background: #9b59b6;
+  border-color: #d9d9d9;
+}
+form input[type="radio"] {
+  display: none;
+}
+form .button {
+  height: 45px;
+  margin: 35px 0;
+}
+form .button input select option {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.chart {
+  border: none;
+  box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, 0.349);
+  text-align: center;
+  cursor: pointer;
+  padding: 3rem 0;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.chart h3 {
+  font-size: 20px;
+  color: var(--red);
+}
+
+.chart:hover {
+  margin-top: -5px;
+  margin-bottom: 5px;
+  transition: var(--transition);
+}
+
+.patient_month {
+  box-sizing: border-box;
+}
+
+/* =======================    Alert ======================= */
+
+.alert-warning {
+  width: 100%;
+  color: var(--red);
+  text-align: center;
+  background: #e6bc15;
+  padding: 10px 0;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 10px;
+}
+
+.alert-success {
+  width: 100%;
+  color: var(--white);
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 1rem;
+  background: #1fae51;
+
+  border-radius: 10px;
+}
+
+@media (max-width: 584px) {
+  .container_form {
+    max-width: 100%;
+  }
+  form .input-details .input-box {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  form .category {
+    width: 100%;
+  }
+  .content form .input-details {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .input-details::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+@media (max-width: 459px) {
+  .container_form .content .category {
+    flex-direction: column;
+  }
+}
