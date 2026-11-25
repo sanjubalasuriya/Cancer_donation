@@ -1,0 +1,200 @@
+<?php
+require_once __DIR__ . '/security.php';
+require_once __DIR__ . '/../db/db.php';
+require_once __DIR__ . '/../helpers/validation.php';
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$patient = null;
+
+if ($id && $id > 0) {
+    $stmt = mysqli_prepare($con, 'SELECT * FROM `patients` WHERE `id` = ? LIMIT 1');
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'i', $id);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        $patient = $res ? mysqli_fetch_assoc($res) : null;
+        mysqli_stmt_close($stmt);
+    }
+}
+
+$errorMsg = '';
+$successMsg = '';
+
+if ($patient && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pupdate'])) {
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        $errorMsg = 'Session expired. Please refresh and try again.';
+    } else {
+        $f_name = clean_input($_POST['f_name'] ?? '');
+        $l_name = clean_input($_POST['l_name'] ?? '');
+        $nic = clean_input($_POST['nic'] ?? '');
+        $contact = clean_input($_POST['contact'] ?? '');
+        $email = clean_input($_POST['email'] ?? '');
+        $dob = clean_input($_POST['dob'] ?? '');
+        $gender = clean_input($_POST['gender'] ?? '');
+        $cancer = clean_input($_POST['cancer'] ?? '');
+        $c_step = clean_input($_POST['c_step'] ?? '');
+        $amountRaw = clean_input($_POST['amount'] ?? '');
+        $address = clean_input($_POST['address'] ?? '');
+
+        if ($f_name === '' || $l_name === '' || $nic === '' || $contact === '' || $email === '' || $dob === '' || $gender === '' || $cancer === '' || $c_step === '' || $amountRaw === '' || $address === '') {
+            $errorMsg = 'Please fill in all required fields.';
+        } elseif (!is_valid_phone($contact)) {
+            $errorMsg = 'Mobile number must be exactly 10 digits.';
+        } elseif (!is_valid_email($email)) {
+            $errorMsg = 'Please enter a valid email address.';
+        } elseif (!is_positive_number($amountRaw)) {
+            $errorMsg = 'Amount must be greater than zero.';
+        } else {
+            $upload = handle_image_upload($_FILES['pimage'] ?? [], __DIR__ . '/../image', 'image', false);
+            if (!$upload['ok']) {
+                $errorMsg = $upload['error'];
+            } else {
+                $amount = (int)$amountRaw;
+                $newImg = $upload['path'] ?: $patient['image'];
+
+                $upd = mysqli_prepare(
+                    $con,
+                    'UPDATE `patients` SET `f_name` = ?, `l_name` = ?, `nic` = ?, `contact` = ?, `email` = ?, `dob` = ?, `gender` = ?, `cancer` = ?, `c_step` = ?, `amount` = ?, `address` = ?, `image` = ? WHERE `id` = ?'
+                );
+                if ($upd) {
+                    mysqli_stmt_bind_param($upd, 'sssssssssissi', $f_name, $l_name, $nic, $contact, $email, $dob, $gender, $cancer, $c_step, $amount, $address, $newImg, $id);
+                    if (mysqli_stmt_execute($upd)) {
+                        $successMsg = 'Patient record updated successfully.';
+                        $patient = array_merge($patient, [
+                            'f_name' => $f_name,
+                            'l_name' => $l_name,
+                            'nic' => $nic,
+                            'contact' => $contact,
+                            'email' => $email,
+                            'dob' => $dob,
+                            'gender' => $gender,
+                            'cancer' => $cancer,
+                            'c_step' => $c_step,
+                            'amount' => $amount,
+                            'address' => $address,
+                            'image' => $newImg,
+                        ]);
+                    } else {
+                        $errorMsg = 'Failed to update patient record.';
+                    }
+                    mysqli_stmt_close($upd);
+                }
+            }
+        }
+    }
+}
+
+include __DIR__ . '/header.php';
+
+$cancerOptions = [];
+$cRes = mysqli_query($con, 'SELECT `name` FROM `cancers` ORDER BY `name` ASC');
+if ($cRes) {
+    while ($cRow = mysqli_fetch_assoc($cRes)) {
+        $cancerOptions[] = $cRow['name'];
+    }
+}
+$stages = ['Level 1', 'Level 2', 'Level 3', 'Level 4'];
+?>
+
+<div class="container_admin">
+    <div class="table_title">
+        <h1>Edit Patient</h1>
+        <a href="patients.php" class="btn btn-secondary">Back to Patients</a>
+    </div>
+    <hr>
+
+    <?php if (!$patient): ?>
+        <div class="empty-state">
+            <h3>Patient Not Found</h3>
+            <p>The requested patient record does not exist.</p>
+            <a href="patients.php" class="btn">Return to Patients</a>
+        </div>
+    <?php else: ?>
+        <?php if ($errorMsg !== ''): ?>
+            <div class="alert alert-danger" role="alert"><?php echo e($errorMsg); ?></div>
+        <?php endif; ?>
+        <?php if ($successMsg !== ''): ?>
+            <div class="alert alert-success" role="alert"><?php echo e($successMsg); ?></div>
+        <?php endif; ?>
+
+        <img class="preview-avatar" src="../<?php echo e($patient['image'] ?: 'img/patients1.jpg'); ?>" alt="<?php echo e($patient['f_name']); ?>">
+
+        <div class="content_form">
+            <form method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="input-details">
+                    <div class="input-box">
+                        <label class="labels" for="p_id">Patient ID</label>
+                        <input type="text" id="p_id" name="p_id" value="<?php echo e($patient['p_id']); ?>" readonly>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="f_name">First Name</label>
+                        <input type="text" id="f_name" name="f_name" value="<?php echo e($patient['f_name']); ?>" onkeyup="lettersOnly(this)" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="l_name">Last Name</label>
+                        <input type="text" id="l_name" name="l_name" value="<?php echo e($patient['l_name']); ?>" onkeyup="lettersOnly(this)" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="nic">NIC</label>
+                        <input type="text" id="nic" name="nic" value="<?php echo e($patient['nic']); ?>" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="contact">Phone Number</label>
+                        <input type="tel" id="contact" name="contact" value="<?php echo e($patient['contact']); ?>" maxlength="10" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="email">Email</label>
+                        <input type="email" id="email" name="email" value="<?php echo e($patient['email']); ?>" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" value="<?php echo e($patient['dob']); ?>" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="Male" <?php echo $patient['gender'] === 'Male' ? 'selected' : ''; ?>>Male</option>
+                            <option value="Female" <?php echo $patient['gender'] === 'Female' ? 'selected' : ''; ?>>Female</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="cancer">Cancer Type</label>
+                        <select id="cancer" name="cancer" required>
+                            <?php foreach ($cancerOptions as $cname): ?>
+                                <option value="<?php echo e($cname); ?>" <?php echo $patient['cancer'] === $cname ? 'selected' : ''; ?>><?php echo e($cname); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="c_step">Cancer Stage</label>
+                        <select id="c_step" name="c_step" required>
+                            <?php foreach ($stages as $stage): ?>
+                                <option value="<?php echo e($stage); ?>" <?php echo $patient['c_step'] === $stage ? 'selected' : ''; ?>><?php echo e($stage); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="amount">Target Amount (Rs.)</label>
+                        <input type="number" id="amount" name="amount" value="<?php echo e((string)$patient['amount']); ?>" min="1" step="1" required>
+                    </div>
+                    <div class="input-box">
+                        <label class="labels" for="pimage">Replace Photo (optional)</label>
+                        <input type="file" id="pimage" name="pimage" accept="image/*">
+                    </div>
+                    <div class="input-box full">
+                        <label class="labels" for="address">Address</label>
+                        <textarea id="address" name="address" rows="3" required><?php echo e($patient['address']); ?></textarea>
+                    </div>
+                </div>
+
+                <div class="button">
+                    <button type="submit" class="btn" name="pupdate" id="pupdate">Save Changes</button>
+                    <a href="patients.php" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php include __DIR__ . '/footer.php'; ?>

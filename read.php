@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Awareness | Save Life</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="img/logo.png" type="image/png">
+</head>
+<body>
+    <?php include __DIR__ . '/commen/header.php'; ?>
+
+    <section class="container donate_container">
+        <h1>Understanding Cancer</h1>
+        <h3>Awareness, early detection, and monthly patient care trends</h3>
+        <hr>
+    </section>
+
+    <section class="container">
+        <div class="content-card read2">
+            <h3><ion-icon name="medkit-outline"></ion-icon> How Cancer Starts</h3>
+            <p>
+                Your body is made up of trillions of living cells. Within each cell are genes that control and direct the
+                cell's functions. Normal cells continuously grow and divide, and over time they die and are replaced by new
+                ones in an orderly manner. When this process breaks down, damaged cells continue to grow and divide
+                uncontrollably, often forming a mass of tissue called a tumor.
+            </p>
+
+            <h3><ion-icon name="medkit-outline"></ion-icon> What Are Tumors</h3>
+            <p>
+                Tumors can be benign or malignant. Benign tumors stay in one location and do not spread to other parts of
+                the body. Malignant tumors can invade nearby tissues and spread, making timely medical treatment essential.
+                Not all cancers form solid tumors &mdash; for example, leukemias typically start in the bone marrow and
+                enter the bloodstream.
+            </p>
+
+            <h3><ion-icon name="medkit-outline"></ion-icon> When Cancer Spreads</h3>
+            <p>
+                Cancer cells can migrate to other parts of the body through the blood and lymph systems in a process called
+                metastasis. Knowing the primary type of cancer helps doctors select the most effective targeted treatment.
+            </p>
+
+            <div class="cancer_list" style="margin-top:2rem;">
+                <div class="item-group" style="grid-column:1 / -1;">
+                    <h3>Most Common Cancers</h3>
+                    <ul style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Bladder Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Breast Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Colon and Rectal Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Endometrial Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Kidney Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Leukemia</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Liver Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Lung Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Melanoma</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Non-Hodgkin Lymphoma</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Pancreatic Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Prostate Cancer</li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon> Thyroid Cancer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container donate_container">
+        <h1>Registered Patients Overview</h1>
+        <h3>Monthly registered patient statistics</h3>
+        <hr>
+
+        <?php
+        $amount = [];
+        $month = [];
+        $res = mysqli_query($con, 'SELECT MONTH(date) AS mnum, ANY_VALUE(MONTHNAME(date)) AS mname, COUNT(*) AS total_rows FROM `patients` GROUP BY MONTH(date) ORDER BY mnum ASC');
+        if ($res) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                $amount[] = (int)$row['total_rows'];
+                $month[] = $row['mname'];
+            }
+        }
+        ?>
+
+        <div class="content-card">
+            <?php if (empty($month)): ?>
+                <div class="empty-state">
+                    <h3>No Patient Statistics Available</h3>
+                    <p>Chart data will appear once patient records are registered.</p>
+                </div>
+            <?php else: ?>
+                <div class="patient_month">
+                    <canvas id="pmonth" height="110"></canvas>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <?php if (!empty($month)): ?>
+        <script>
+            new Chart(document.getElementById("pmonth"), {
+                type: "bar",
+                data: {
+                    labels: <?php echo json_encode($month); ?>,
+                    datasets: [{
+                        label: "Registered Patients",
+                        data: <?php echo json_encode($amount); ?>,
+                        backgroundColor: "rgba(185, 28, 28, 0.85)",
+                        borderColor: "rgba(185, 28, 28, 1)",
+                        borderRadius: 6,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        </script>
+    <?php endif; ?>
+
+    <?php include __DIR__ . '/commen/footer.php'; ?>
+</body>
+</html>
