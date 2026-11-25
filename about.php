@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="index.css">
     <link rel="icon" href="img/logo.png" type="image/png">
 </head>
+
 <body>
     <?php include __DIR__ . '/commen/header.php'; ?>
 
@@ -22,22 +24,27 @@
         <div class="content-card read2">
             <h3><ion-icon name="heart-outline"></ion-icon> Our Mission</h3>
             <p>
-                The Save Life Cancer Foundation was established in 2018 as a charitable organization dedicated to one clear
-                purpose: creating practical, compassionate support for cancer patients to ease and improve their treatment
+                The Save Life Cancer Foundation was established in 2018 as a charitable organization dedicated to one
+                clear
+                purpose: creating practical, compassionate support for cancer patients to ease and improve their
+                treatment
                 journey so their energies remain focused on getting well.
             </p>
 
             <h3><ion-icon name="medkit-outline"></ion-icon> Founded by Specialists</h3>
             <p>
-                Our founders are doctors and cancer treatment specialists. We understand the cancer treatment journey and
-                its daily challenges, and know that a holistic, caring support system makes a real difference for patients
+                Our founders are doctors and cancer treatment specialists. We understand the cancer treatment journey
+                and
+                its daily challenges, and know that a holistic, caring support system makes a real difference for
+                patients
                 and their families.
             </p>
 
             <h3><ion-icon name="people-outline"></ion-icon> Community-Focused Care</h3>
             <p>
                 We are local and community focused, staying close to the ways direct, practical, and immediate help is
-                needed &mdash; from funding urgent high-risk treatments and hospital equipment to organizing hair donations
+                needed &mdash; from funding urgent high-risk treatments and hospital equipment to organizing hair
+                donations
                 and essential supplies.
             </p>
 
@@ -50,4 +57,5 @@
 
     <?php include __DIR__ . '/commen/footer.php'; ?>
 </body>
+
 </html>

@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 include __DIR__ . '/header.php';
 
 $cancerLabels = [];
@@ -20,10 +21,14 @@ if ($res2) {
         $stageCounts[] = (int)$row['total'];
     }
 }
+=======
+include('header.php');
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e
 ?>
 
 <div class="container_admin">
     <div class="table_title">
+<<<<<<< HEAD
         <h1>Cancer Type &amp; Stage Breakdown</h1>
         <a href="charts.php" class="btn btn-secondary">Back to Charts</a>
     </div>
@@ -89,3 +94,19 @@ if ($res2) {
 </div>
 
 <?php include __DIR__ . '/footer.php'; ?>
+=======
+        <h1>Cancer Charts</h1>
+
+
+    </div>
+    <hr>
+
+
+</div>
+
+
+
+<?php
+include('footer.php');
+?>
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e

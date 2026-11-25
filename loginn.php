@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require_once __DIR__ . '/helpers/security.php';
 require_once __DIR__ . '/helpers/auth.php';
 require_once __DIR__ . '/db/db.php';
@@ -55,3 +56,37 @@ if ($user['role'] === 'salon') {
 session_unset();
 session_destroy();
 redirect_with_flash('login.php', 'status', 'Account role is not configured.');
+=======
+include('security.php');
+include('db/db.php');
+
+if(isset($_POST['login_btn'])){
+
+    $uname = $_POST['uname'];
+    $password = md5($_POST['password']);
+
+    $query = "SELECT * FROM login WHERE uname='$uname' AND password='$password'";
+    $query_run = mysqli_query($con, $query);
+    $usertypes = mysqli_fetch_array($query_run);
+
+    if($usertypes['role'] == "admin"){
+
+        $_SESSION['uname'] = $uname;
+        header('Location: admin/index.php');
+
+    }else if($usertypes['role'] == "salon"){
+
+        $_SESSION['uname'] = $uname;
+        header('Location: salon/index.php');
+
+    }
+    
+    
+    else{
+        $_SESSION['status'] = 'Username and password invalid';
+        header('Location: login.php');
+    }
+}
+
+?>
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e

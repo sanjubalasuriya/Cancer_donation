@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 document.addEventListener("DOMContentLoaded", function () {
   var toggle = document.getElementById("sidebarToggle");
   var navigation = document.getElementById("adminSidebar");
@@ -100,3 +101,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+=======
+let toggle = document.querySelector(".toggle");
+let navigation = document.querySelector(".navigation");
+let main = document.querySelector(".main");
+
+toggle.onclick = function () {
+  navigation.classList.toggle("active");
+  main.classList.toggle("active");
+};
+
+//add hoverd class in selected list item
+let list = document.querySelectorAll(".navigation li");
+
+function activeLink() {
+  list.forEach((item) => item.classList.remove("hovered"));
+  this.classList.add("hovered");
+}
+list.forEach((item) => item.addEventListener("mouseover", activeLink));
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e

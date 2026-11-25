@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require_once __DIR__ . '/security.php';
 require_once __DIR__ . '/../db/db.php';
 require_once __DIR__ . '/../helpers/validation.php';
@@ -44,10 +45,42 @@ if ($cancer && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cupdate'])
 }
 
 include __DIR__ . '/header.php';
+=======
+include('header.php');
+include ('../db/db.php');
+?>
+
+
+
+<?php
+
+$id=$_GET["id"];
+$num="";
+$name="";
+
+
+
+
+    
+
+
+$res=mysqli_query($con,"SELECT * FROM `cancers` WHERE id=$id");  
+while($row=mysqli_fetch_array($res))
+{
+    
+    $num=$row["num"];
+    $name=$row["name"];
+    
+    
+    
+}
+
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e
 ?>
 
 <div class="container_admin">
     <div class="table_title">
+<<<<<<< HEAD
         <h1>Edit Cancer Type</h1>
         <a href="cancers.php" class="btn btn-secondary">Back to Cancers</a>
     </div>
@@ -91,3 +124,73 @@ include __DIR__ . '/header.php';
 </div>
 
 <?php include __DIR__ . '/footer.php'; ?>
+=======
+        <h1>Cancer Update</h1>
+
+
+    </div>
+    <hr>
+    <div class="" id="csign">
+
+    </div>
+    <div class="alert-success" id="success" style="display:none">
+        Cancer Updated Successfully!
+    </div>
+
+    <div class="">
+
+        <div class="content_form">
+            <form method="POST">
+                <div class="input-details">
+                    <div class="input-box">
+                        <label class="labels">ID</label>
+                        <input type="text" placeholder="Enter First name" required name="num" readonly
+                            value="<?php echo $num;?>">
+                    </div>
+                    <div class="input-box">
+                        <label class="labels">Cancer Name</label>
+                        <input type="text" placeholder="Enter Last username" required name="name"
+                            value="<?php echo $name;?>">
+                    </div>
+
+                </div>
+
+                <div class="button">
+                    <input type="submit" class="btn" value="Update" name="cupdate" id="cupdate">
+                    <a href="cancers.php" class="btn">Back</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+<?php
+if(isset($_POST["cupdate"]))
+
+{
+    mysqli_query($con,"UPDATE `cancers` SET num='$_POST[num]', name='$_POST[name]' WHERE id=$id") or die(mysqli_error($con));  
+
+    ?>
+<script type="text/javascript">
+document.getElementById("success").style.display = "block";
+setTimeout(function() {
+    window.location = "cancers.php";
+}, 1000);
+</script>
+<?php
+ }
+
+
+
+?>
+
+
+<?php
+include('footer.php');
+?>
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e

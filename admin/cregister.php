@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once __DIR__ . '/../helpers/security.php';
 require_once __DIR__ . '/../db/db.php';
@@ -53,3 +54,59 @@ if (!$ok) {
 json_response(true, 'Cancer type (' . $num . ') registered successfully.', [
     'redirect' => 'cancers.php',
 ]);
+=======
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<?php 
+
+include ('../db/db.php');
+
+
+
+$num = $_POST["num"];
+$name = $_POST["name"];
+
+
+
+
+if(empty($num) || empty($name) ){
+
+
+    echo "
+            <div class=' alert-warning' role='alert'>
+            
+                      <b>  Fill All Fields...</b>
+            </div>
+
+    ";
+    exit();
+}
+else{
+
+$sql = "INSERT INTO `cancers` (`id`, `num`, `name`) VALUES (NULL, '$num', '$name')";
+
+        
+
+
+$run_query = mysqli_query($con,$sql);
+if($run_query){
+
+            
+?>
+<script type="text/javascript">
+document.getElementById("success").style.display = "block";
+setTimeout(function() {
+    window.location.href = window.location.href;
+}, 2000);
+</script>
+<?php
+        }
+        
+    
+
+    
+    }
+    
+
+?>
+>>>>>>> 3b14633bcb1afb9bdc3a4eb22f8cbe0fd8abce2e

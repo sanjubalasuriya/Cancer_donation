@@ -1,0 +1,36 @@
+# ── Sensitive config (never commit credentials) ──────────────────────────────
+config/app.php
+
+# ── Composer / vendor ─────────────────────────────────────────────────────────
+vendor/
+admin/vendor/
+salon/vendor/
+
+# ── PHPMailer includes (bundled legacy copies) ────────────────────────────────
+admin/includes/
+salon/includes/
+
+# ── Generated certificates / uploads ─────────────────────────────────────────
+admin/certificate/*.jpg
+admin/certificate/*.pdf
+uploads/
+
+# ── Dead / legacy files removed during refactoring ───────────────────────────
+aa.html
+admin/nw.php
+admin/nw.css
+admin/eventReg.php
+admin/newsReg.php
+admin/pregister.php
+admin/sregister.php
+admin/chart/
+
+# ── OS / editor junk ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+.idea/
+.vscode/
+*.swp
